@@ -3,7 +3,10 @@
 template < class T >
 BiList<T> *create(const T &d)
 {
-
+  BiList<T> *h = new BiList<T>{d, nullptr, nullptr};
+  h->next = h;
+  h->prev = h;
+  return h;
 }
 
 template < class T >
