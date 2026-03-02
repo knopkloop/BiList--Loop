@@ -12,6 +12,10 @@ BiList<T> *create(const T &d)
 template < class T >
 BiList<T> *add(BiList<T> *h, const T &d)
 {
+  if (!h)
+  {
+    return create(d);
+  }
   BiList<T> *newh = new BiList<T>{d, h, h->prev};
   h->prev->next = newh;
   h->prev = newh;
@@ -21,10 +25,7 @@ BiList<T> *add(BiList<T> *h, const T &d)
 template < class T >
 BiList<T> *insert(BiList<T> *n, const T &d)
 {
-  BiList<T> *newNode = new BiList<T>{d, n->next, n};
-  n->next->prev = newNode;
-  n->next = newNode;
-  return newNode;
+  return add(h->next, d);
 }
 
 template < class T >
