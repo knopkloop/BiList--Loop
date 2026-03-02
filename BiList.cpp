@@ -60,16 +60,14 @@ BiList<T> *clear(BiList<T> *b, BiList<T> *e) noexcept
   if (b == e)
   {
     BiList<T> *start = b;
-    BiList<T> *current = b;
+    BiList<T> *cur = b;
 
-    do
+    while (cur != start)
     {
-      BiList<T> *temp = current->next;
-      delete current;
-      current = temp;
+      BiList<T> *temp = cur->next;
+      delete cur;
+      cur = temp;
     }
-    while (current != start);
-
     return nullptr;
   }
 
@@ -99,12 +97,14 @@ F traverse(F f, BiList<T> *b, BiList<T> *e)
 {
   if (!b) return f;
 
-  if (b == e) {
+  if (b == e)
+  {
     BiList<T>* start = b;
-    do {
+    for(b = b; ; b = b->next)
+    {
       f(b->data);
-      b = b->next;
-    } while (b != start);
+      if (b->next == start) break;
+    }
     return f;
   }
 

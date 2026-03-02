@@ -3,30 +3,18 @@
 #include "BiList.cpp"
 
 template <class T>
-void printElement(const T& val) {
+void printElement(const T& val)
+{
   std::cout << val << " ";
 }
 
 template <class T>
-struct Counter {
-  int count = 0;
-  void operator()(const T&) {
-    count++;
-  }
-};
-
-template <class T>
-struct MaxFinder {
-  T max_value;
-  bool first = true;
-
-  void operator()(const T& val) {
-    if (first) {
-      max_value = val;
-      first = false;
-    } else if (val > max_value) {
-      max_value = val;
-    }
+struct Counter
+{
+  size_t count = 0;
+  void operator()(const T&)
+  {
+    ++count;
   }
 };
 
@@ -41,39 +29,31 @@ int main() {
 
   Counter<int> cnt;
   cnt = traverse(cnt, list, list);
-  std::cout << "Количество элементов: " << cnt.count << "\n";
+  std::cout << "Кол-во элементов: " << cnt.count << "\n";
 
-  MaxFinder<int> mx;
-  mx = traverse(mx, list, list);
-  std::cout << "Максимальный элемент: " << mx.max_value << "\n";
-
+  std::cout << "\nadd(0) + add(7): ";
   list = add(list, 0);
   list = add(list, 7);
-  std::cout << "\nПосле add(0) и add(7): ";
   traverse(printElement<int>, list, list);
   std::cout << "\n";
 
-  if (list->next != list) {
-    insert(list->next, 3);
-    std::cout << "После insert(вставил после второго элемента): ";
-    traverse(printElement<int>, list, list);
-    std::cout << "\n";
-  }
+  std::cout << "insert после второго узла: ";
+  insert(list->next, 3);
+  traverse(printElement<int>, list, list);
+  std::cout << "\n";
 
+  std::cout << "cut: ";
   list = cut(list);
-  std::cout << "После cut (удалили голову): ";
   traverse(printElement<int>, list, list);
   std::cout << "\n";
 
-  if (list->next != list) {
-    erase(list);
-    std::cout << "После erase (удалили после головы): ";
-    traverse(printElement<int>, list, list);
-    std::cout << "\n";
-  }
+  std::cout << "erase после третьего узла: ";
+  erase(list->next->next);
+  traverse(printElement<int>, list, list);
+  std::cout << "\n";
 
-  list = clear(list, list);
   std::cout << "\nПосле clear: ";
+  list = clear(list, list);
   traverse(printElement<int>, list, list);
   std::cout << "(пусто)" << "\n";
 }
