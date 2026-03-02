@@ -45,7 +45,11 @@ BiList<T> *cut(BiList<T> *h) noexcept
 template < class T >
 BiList<T> *erase(BiList<T> *n) noexcept
 {
-
+  if (n->next == n)
+  {
+    return nullptr;
+  }
+  return cut(n->next);
 }
 
 template < class T >
