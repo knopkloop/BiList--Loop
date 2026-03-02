@@ -57,20 +57,36 @@ BiList<T> *clear(BiList<T> *b, BiList<T> *e) noexcept
 {
   if (b == nullptr) return e;
 
+  if (b == e)
+  {
+    BiList<T> *start = b;
+    BiList<T> *current = b;
+
+    do
+    {
+      BiList<T> *temp = current->next;
+      delete current;
+      current = temp;
+    }
+    while (current != start);
+
+    return nullptr;
+  }
+
   BiList<T> *before = b->prev;
   BiList<T> *start = b;
+
   while (b != e)
   {
     BiList<T> *temp = b->next;
     delete b;
     b = temp;
-    if(b == start)
-    {
-      break;
-    }
+
+    if (b == start) break;
   }
 
-  if (before != nullptr && b != nullptr) {
+  if (before != nullptr && b != nullptr)
+  {
     before->next = b;
     b->prev = before;
   }
@@ -81,8 +97,14 @@ BiList<T> *clear(BiList<T> *b, BiList<T> *e) noexcept
 template< class T, class F >
 F traverse(F f, BiList<T> *b, BiList<T> *e)
 {
-  if (!b)
-  {
+  if (!b) return f;
+
+  if (b == e) {
+    BiList<T>* start = b;
+    do {
+      f(b->data);
+      b = b->next;
+    } while (b != start);
     return f;
   }
 
