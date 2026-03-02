@@ -31,7 +31,15 @@ BiList<T> *insert(BiList<T> *n, const T &d)
 template < class T >
 BiList<T> *cut(BiList<T> *h) noexcept
 {
-
+  if (h->next == h)
+  {
+    return nullptr;
+  }
+  BiList<T> *subh = h->next;
+  h->prev->next = subh;
+  subh->prev = h->prev;
+  delete h;
+  return subh;
 }
 
 template < class T >
