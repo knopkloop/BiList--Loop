@@ -12,7 +12,20 @@ BiList<T> *create(const T &d)
 template < class T >
 BiList<T> *add(BiList<T> *h, const T &d)
 {
+  BiList<T> *newh = new BiList<T>{d, nullptr, nullptr};
+  if (!h)
+  {
+    newh->next = newh;
+    newh->prev = newh;
+  }
 
+  BiList<T> *last = h->prev;
+  newh->prev = last;
+  newh->next = h;
+  h->prev = newh;
+  last->next = newh;
+
+  return newh;
 }
 
 template < class T >
