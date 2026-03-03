@@ -33,6 +33,7 @@ BiList<T> *cut(BiList<T> *h) noexcept
 {
   if (h->next == h)
   {
+    delete h;
     return nullptr;
   }
   BiList<T> *subh = h->next;
@@ -55,38 +56,40 @@ BiList<T> *erase(BiList<T> *n) noexcept
 template < class T >
 BiList<T> *clear(BiList<T> *b, BiList<T> *e) noexcept
 {
-  if (b == nullptr) return e;
-
   if (b == e)
   {
-    BiList<T> *start = b;
-    BiList<T> *cur = b;
+    if (b->next == b)
+    {
+      delete b;
+      return nullptr;
+    }
 
-    while (cur != start)
+    BiList<T> *last = b->prev;
+    last->next = nullptr;
+
+    BiList<T> *cur = b;
+    while (cur != nullptr)
     {
       BiList<T> *temp = cur->next;
       delete cur;
       cur = temp;
     }
+
     return nullptr;
   }
 
-  BiList<T> *before = b->prev;
-  BiList<T> *start = b;
-
+  BiList<T> *bef = b->prev;
   while (b != e)
   {
     BiList<T> *temp = b->next;
     delete b;
     b = temp;
-
-    if (b == start) break;
   }
 
-  if (before != nullptr && b != nullptr)
+  if (bef != nullptr && b != nullptr)
   {
-    before->next = b;
-    b->prev = before;
+    bef->next = b;
+    b->prev = bef;
   }
 
   return b;
@@ -100,7 +103,7 @@ F traverse(F f, BiList<T> *b, BiList<T> *e)
   if (b == e)
   {
     BiList<T>* start = b;
-    for(b = b; ; b = b->next)
+    for(; ; b = b->next)
     {
       f(b->data);
       if (b->next == start) break;
